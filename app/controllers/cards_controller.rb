@@ -2,7 +2,7 @@ class CardsController < ApplicationController
   before_filter :find_deck
 
   def show
-    @card = @deck.cards.find(params[:id])
+    @card = find_card(@deck)
   end
 
   def new
@@ -16,17 +16,17 @@ class CardsController < ApplicationController
   end
 
   def destroy
-    @card = @deck.cards.find(params[:id])
-    @card.delete
+    @card = find_card(@deck)
+    @card.destroy
     redirect_to @deck
   end
 
   def edit
-    @card = @deck.cards.find(params[:id])
+    @card = find_card(@deck)
   end
 
   def update
-    @card = @deck.cards.find(params[:id])
+    @card = find_card(@deck)
     @card.update_attributes(params[:card])
     redirect_to @deck
   end
@@ -35,6 +35,10 @@ class CardsController < ApplicationController
 
   def find_deck
     @deck = Deck.find(params[:deck_id])
+  end
+
+  def find_card(deck)
+    deck.cards.find(params[:id])
   end
 
 end
